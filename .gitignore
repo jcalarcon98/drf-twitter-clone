@@ -1,22 +1,28 @@
-# Django #
+#directories to ignore
+*.vscode/
+.idea/
+.installed.cfg
+
+#Django
 *.log
 *.pot
 *.pyc
-__pycache__
-db.sqlite3
-media
+__pycache__/
 
-# Pycharm
-.idea/**/workspace.xml
-.idea/**/tasks.xml
-.idea/dictionaries
-.idea/**/dataSources/
-.idea/**/dataSources.ids
-.idea/**/dataSources.xml
-.idea/**/dataSources.local.xml
-.idea/**/sqlDataSources.xml
-.idea/**/dynamic.xml
-.idea/**/uiDesigner.xml
-.idea/**/gradle.xml
-.idea/**/libraries
-*.iws /out/
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+pytestdebug.log
+
+db.sqlite3
+
