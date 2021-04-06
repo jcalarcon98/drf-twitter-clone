@@ -9,6 +9,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'wu!m_$gyi(oc4hl+yr$@n%_$y@0zh(uknv2g-ekloae)i7&q%6'
 
+# Custom User
+AUTH_USER_MODEL = 'authentication.User'
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -16,6 +19,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+
+    # Local
+    'authentication'
 ]
 
 MIDDLEWARE = [
