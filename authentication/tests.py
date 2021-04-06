@@ -30,7 +30,9 @@ class UserManagerTests(TestCase):
         self.assertTrue(admin_user.is_superuser)
 
         with self.assertRaises(ValueError):
-            get_user_model().objects.create_superuser(email=admin_user_email, password=admin_user_password, is_superuser=False)
+            get_user_model().objects.create_superuser(email=admin_user_email, password=admin_user_password,
+                                                      is_superuser=False)
 
-
-
+        with self.assertRaises(ValueError):
+            get_user_model().objects.create_superuser(email=admin_user_email, password=admin_user_password,
+                                                      is_staff=False)
