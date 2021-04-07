@@ -7,4 +7,5 @@ app_name = 'api'
 
 urlpatterns = [
     path('auth/', include('authentication.urls', namespace='authentication')),
+    path('', include('twitter.urls', namespace='twitter'))
 ]
