@@ -21,8 +21,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Third Part apps
+    'drf_yasg',
     'rest_framework',
-    
+
     # Local
     'api',
     'authentication',
@@ -30,9 +31,20 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
+}
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    },
 }
 
 MIDDLEWARE = [
