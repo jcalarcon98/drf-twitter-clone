@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     # Local
     'api',
     'apps.authentication',
+    'apps.tweets',
+    'apps.comments',
 ]
 
 REST_FRAMEWORK = {
