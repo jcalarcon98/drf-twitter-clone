@@ -16,7 +16,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     location = models.CharField(max_length=200, null=True, blank=True, default='')
     birthday = models.DateField(null=True, blank=True)
     profile_picture = models.FileField(blank=True, null=True)
-    cover_photo = models.Field(blank=True, null=True)
+    cover_photo = models.FileField(blank=True, null=True)
     email = models.EmailField('Email Addres', unique=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
