@@ -15,18 +15,6 @@ class ActionSerializer(serializers.Serializer):
     content = serializers.CharField(max_length=300, required=False,
                                     error_messages={'max_length': "Tweet content is too Long"})
 
-    def validate(self, data):
-        action = data['action']
-        if action == 'RETWEET':
-            if 'content' not in data:
-                raise serializers.ValidationError(
-                    {
-                        'message': 'If the action requested is RETWEET, you should provide a content'
-                    }
-                )
-
-        return data
-
 
 class TweetSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(
