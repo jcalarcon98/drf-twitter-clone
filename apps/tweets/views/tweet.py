@@ -1,18 +1,20 @@
 from rest_framework import viewsets, status
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from apps.tweets.models import Tweet
-from apps.tweets.serializers.tweet import TweetSerializer, ActionSerializer
+from apps.tweets.serializers.action import ActionSerializer
+from apps.tweets.serializers.tweet import TweetSerializer, TweetSerializerCreate
+from apps.utils.permissions import IsAuthorOrReadOnly
 
 
 class TweetViewSet(viewsets.ModelViewSet):
     """
     Simple viewset for viewing and editing accounts
     """
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthorOrReadOnly]
     queryset = Tweet.objects.all()
     serializer_class = TweetSerializer
+    serializer_class_create = TweetSerializerCreate
 
     def partial_update(self, request, *args, **kwargs):
         current_tweet = self.get_object()
@@ -33,3 +35,8 @@ class TweetViewSet(viewsets.ModelViewSet):
             return Response(tweet_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         tweet_serializer.save()
         return Response(tweet_serializer.data, status=status.HTTP_200_OK)
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return self.serializer_class_create
+        return self.serializer_class
