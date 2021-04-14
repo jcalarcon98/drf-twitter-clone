@@ -4,6 +4,7 @@ from apps.comments.models import Comment
 from apps.comments.serializers.comment import CommentSerializer, CommentSerializerCreate
 from apps.utils.permissions import IsAuthorOrReadOnly
 
+
 class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthorOrReadOnly]
     queryset = Comment.objects.all()

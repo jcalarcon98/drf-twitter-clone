@@ -5,7 +5,6 @@ class ActionSerializer(serializers.Serializer):
     ACTIONS = (
         ('LIKE', 'like'),
         ('UNLIKE', 'unlike'),
-        ('RETWEET', 'retweet'),
     )
 
     action = serializers.ChoiceField(choices=ACTIONS,

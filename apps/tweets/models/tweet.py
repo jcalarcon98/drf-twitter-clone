@@ -11,7 +11,7 @@ class TweetLike(models.Model):
 
 
 class Tweet(models.Model):
-    parent = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
+    parent = models.ForeignKey('self', null=True, on_delete=models.SET_NULL, related_name='retweet')
     user = models.ForeignKey(User, related_name='tweets', on_delete=models.CASCADE)
     content = models.CharField(max_length=300)
     image = models.ImageField(blank=True, null=True)

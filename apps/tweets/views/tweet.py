@@ -27,8 +27,7 @@ class TweetViewSet(viewsets.ModelViewSet):
                 current_tweet.likes.add(request.user)
             if action == 'UNLIKE':
                 current_tweet.likes.remove(request.user)
-            if action == 'RETWEET':
-                pass
+
         tweet_serializer = TweetSerializer(data=request.data, instance=current_tweet, partial=True,
                                            context={'request', request})
         if not tweet_serializer.is_valid():
