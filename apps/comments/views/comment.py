@@ -2,10 +2,16 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
 from apps.comments.models import Comment
-from apps.comments.serializers.comment import CommentSerializer
+from apps.comments.serializers.comment import CommentSerializer, CommentSerializerCreate
 
 
 class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    serializer_class_create = CommentSerializerCreate
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return self.serializer_class_create
+        return self.serializer_class

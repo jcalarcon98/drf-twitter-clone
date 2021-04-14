@@ -1,6 +1,9 @@
 from rest_framework import serializers
 
+from apps.authentication.serializers import UserSerializer
+from apps.comments.serializers.comment import CommentSerializer
 from apps.tweets.models import Tweet
+from apps.tweets.models.tweet import TweetLike
 
 
 class ActionSerializer(serializers.Serializer):
@@ -16,7 +19,18 @@ class ActionSerializer(serializers.Serializer):
                                     error_messages={'max_length': "Tweet content is too Long"})
 
 
+class LikeSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+
+    class Meta:
+        model = TweetLike
+        fields = '__all__'
+
+
 class TweetSerializer(serializers.ModelSerializer):
+    likes_count = serializers.SerializerMethodField()
+    likes = LikeSerializer(source='tweetlike_set', many=True, read_only=True)
+    comments = CommentSerializer(many=True)
     user = serializers.HiddenField(
         default=serializers.CurrentUserDefault()
     )
@@ -31,3 +45,7 @@ class TweetSerializer(serializers.ModelSerializer):
                 }
             }
         }
+
+    @staticmethod
+    def get_likes_count(self):
+        return self.likes.count()

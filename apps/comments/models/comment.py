@@ -11,7 +11,8 @@ class Comment(models.Model):
     content = models.CharField(max_length=300)
     tweet = models.ForeignKey(Tweet, related_name='comments', on_delete=models.CASCADE)
     image = models.FileField(blank=True, null=True)
+    likes = models.ManyToManyField(User, related_name='comment', blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.content
-
