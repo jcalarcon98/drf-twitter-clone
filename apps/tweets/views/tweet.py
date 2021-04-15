@@ -39,3 +39,11 @@ class TweetViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             return self.serializer_class_create
         return self.serializer_class
+
+    def get_queryset(self):
+
+        if self.action == 'list':
+            user_id = self.request.query_params.get('user_id', None)
+            if user_id:
+                return Tweet.objects.filter(user__uuid=user_id)
+        return Tweet.objects.all()

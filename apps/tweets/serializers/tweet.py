@@ -8,7 +8,7 @@ from apps.tweets.serializers.like import LikeSerializer
 
 class TweetSerializer(serializers.ModelSerializer):
     likes_count = serializers.SerializerMethodField()
-    retweeted_times = serializers.SerializerMethodField()
+    retweets_count = serializers.SerializerMethodField()
     likes = LikeSerializer(source='tweetlike_set', many=True, read_only=True)
     comments = CommentSerializer(many=True)
     user = UserSerializer()
@@ -22,8 +22,8 @@ class TweetSerializer(serializers.ModelSerializer):
         return self.likes.count()
 
     @staticmethod
-    def get_retweeted_times(self):
-        return self.retweet.count()
+    def get_retweets_count(self):
+        return self.retweets.count()
 
 
 class TweetSerializerCreate(serializers.ModelSerializer):
@@ -34,7 +34,7 @@ class TweetSerializerCreate(serializers.ModelSerializer):
 
     class Meta:
         model = Tweet
-        fields = ('content', 'image', 'created_at', 'user', 'parent')
+        fields = ('content', 'image', 'created_at', 'user', 'parent', 'comment')
         extra_kwargs = {
             'content': {
                 'error_messages': {
@@ -45,11 +45,18 @@ class TweetSerializerCreate(serializers.ModelSerializer):
 
     def validate(self, data):
         if 'content' not in data:
-            if 'parent' not in data:
+            if 'parent' not in data or 'comment' not in data:
                 raise serializers.ValidationError(
                     {
                         'message': 'Content is necessary'
                     }
                 )
+
+        if 'parent' in data and 'comment' in data:
+            raise serializers.ValidationError(
+                {
+                    'message': 'Retweet only can related to a tweet or comment, not both'
+                }
+            )
 
         return data
