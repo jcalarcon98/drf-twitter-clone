@@ -1,7 +1,6 @@
 from builtins import staticmethod
 
 from django.contrib.auth import get_user_model
-from django.templatetags.static import static
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -29,7 +28,6 @@ class FollowerOrFollowingSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     following_count = serializers.SerializerMethodField()
     followers_count = serializers.SerializerMethodField()
-
     followers = FollowerOrFollowingSerializer(many=True)
     following = FollowerOrFollowingSerializer(many=True)
 
@@ -39,6 +37,7 @@ class UserSerializer(serializers.ModelSerializer):
             'name',
             'username',
             'profile_picture',
+            'cover_picture',
             'uuid',
             'following',
             'following_count',
@@ -69,15 +68,12 @@ class RegisterUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ['name', 'email', 'password', 'confirm_password']
+        fields = ['name', 'email', 'password', 'confirm_password', 'profile_picture', 'cover_picture']
         extra_kwargs = {'password': {'write_only': True}}
 
-    def create(self, validated_data):
-        name = validated_data['name']
-        email = validated_data['email']
-        password = validated_data['password']
-        confirm_password = validated_data['confirm_password']
-
+    def validate(self, attrs):
+        password = attrs['password']
+        confirm_password = attrs['confirm_password']
         if password != confirm_password:
             raise serializers.ValidationError(
                 {
@@ -85,7 +81,14 @@ class RegisterUserSerializer(serializers.ModelSerializer):
                 }
             )
 
-        user = self.Meta.model(name=name, email=email)
+    def create(self, validated_data):
+        name = validated_data['name']
+        email = validated_data['email']
+        password = validated_data['password']
+        profile_picture = validated_data['profile_picture'] if 'profile_picture' in validated_data else None
+        cover_picture = validated_data['cover_picture'] if 'cover_picture' in validated_data else None
+
+        user = self.Meta.model(name=name, email=email, profile_picture=profile_picture, cover_picture=cover_picture)
         user.set_password(password)
         user.save()
         return user
