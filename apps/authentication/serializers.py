@@ -81,6 +81,8 @@ class RegisterUserSerializer(serializers.ModelSerializer):
                 }
             )
 
+        return attrs
+
     def create(self, validated_data):
         name = validated_data['name']
         email = validated_data['email']

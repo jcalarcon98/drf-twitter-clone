@@ -49,7 +49,7 @@ class CreateUserViewTests(TestCase):
             'password': 'password',
             'confirm_password': 'password',
         }
-        self.url = reverse('api:authentication:register')
+        self.url = reverse('api:user-list')
 
     def test_create_user(self):
         response = self.client.post(self.url, self.new_user, format='json')
@@ -59,10 +59,8 @@ class CreateUserViewTests(TestCase):
         self.new_user['confirm_password'] = 'nomatter'
         response = self.client.post(self.url, self.new_user, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data.get('password'), "Error: The passwords didn't match")
 
     def test_invalid_request_data(self):
         del self.new_user['password']
-        print(self.new_user)
         response = self.client.post(self.url, self.new_user, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
