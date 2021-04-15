@@ -34,7 +34,7 @@ class TweetSerializerCreate(serializers.ModelSerializer):
 
     class Meta:
         model = Tweet
-        fields = ('content', 'image', 'created_at', 'user', 'parent', 'comment')
+        fields = ('content', 'image', 'created_at', 'user', 'parent', 'comment', 'image')
         extra_kwargs = {
             'content': {
                 'error_messages': {

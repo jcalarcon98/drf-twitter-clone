@@ -52,3 +52,14 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         user_serializer.save()
         return Response(user_serializer.data, status=status.HTTP_200_OK)
+
+    def get_parsers(self):
+        """
+        Put this if Error with swagger appear with parsers
+        :return:
+        :rtype:
+        """
+        if getattr(self, 'swagger_fake_view', False):
+            return []
+
+        return super().get_parsers()

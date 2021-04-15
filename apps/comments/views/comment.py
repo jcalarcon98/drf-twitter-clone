@@ -17,3 +17,14 @@ class CommentViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             return self.serializer_class_create
         return self.serializer_class
+
+    def get_parsers(self):
+        """
+        Put this if Error with swagger appear with parsers
+        :return:
+        :rtype:
+        """
+        if getattr(self, 'swagger_fake_view', False):
+            return []
+
+        return super().get_parsers()

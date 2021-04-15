@@ -1,4 +1,5 @@
 from rest_framework import viewsets, status
+from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
 
 from apps.tweets.models import Tweet
@@ -15,6 +16,7 @@ class TweetViewSet(viewsets.ModelViewSet):
     queryset = Tweet.objects.all()
     serializer_class = TweetSerializer
     serializer_class_create = TweetSerializerCreate
+    parser_classes = [MultiPartParser, FormParser]
 
     def partial_update(self, request, *args, **kwargs):
         current_tweet = self.get_object()
@@ -47,3 +49,14 @@ class TweetViewSet(viewsets.ModelViewSet):
             if user_id:
                 return Tweet.objects.filter(user__uuid=user_id)
         return Tweet.objects.all()
+
+    def get_parsers(self):
+        """
+        Put this if Error with swagger appear with parsers
+        :return:
+        :rtype:
+        """
+        if getattr(self, 'swagger_fake_view', False):
+            return []
+
+        return super().get_parsers()
