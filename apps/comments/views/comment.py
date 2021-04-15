@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework.parsers import MultiPartParser, FormParser
 
 from apps.comments.models import Comment
 from apps.comments.serializers.comment import CommentSerializer, CommentSerializerCreate
@@ -10,6 +11,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     serializer_class_create = CommentSerializerCreate
+    parser_classes = [MultiPartParser, FormParser]
 
     def get_serializer_class(self):
         if self.action == 'create':

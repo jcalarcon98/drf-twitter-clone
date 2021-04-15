@@ -3,6 +3,10 @@
 .idea/
 .installed.cfg
 
+# media
+
+media/
+
 #Django
 *.log
 *.pot
