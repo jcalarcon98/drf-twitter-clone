@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import status, viewsets
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 
@@ -33,4 +33,20 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(register_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def partial_update(self, request, *args, **kwargs):
-        pass
+        current_user = self.get_object()
+        if 'action' in request.data:
+            action = request.data['action']
+            if 'follow_uuid' in request.data:
+                user_to_follow = get_user_model().objects.filter(uuid=request.data['follow_uuid']).first()
+                if action == 'FOLLOW':
+                    current_user.following.add(user_to_follow)
+                elif action == 'UNFOLLOW':
+                    current_user.following.remove(user_to_follow)
+
+        user_serializer = UserSerializer(data=request.data, instance=current_user, partial=True,
+                                         context={'request': request})
+
+        if not user_serializer.is_valid():
+            return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        user_serializer.save()
+        return Response(user_serializer.data, status=status.HTTP_200_OK)

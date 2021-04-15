@@ -1,4 +1,7 @@
+from builtins import staticmethod
+
 from django.contrib.auth import get_user_model
+from django.templatetags.static import static
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -13,10 +16,43 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
 
-class UserSerializer(serializers.ModelSerializer):
+class FollowerOrFollowingSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ('name', 'username', 'profile_picture', 'uuid')
+        fields = (
+            'name',
+            'username',
+            'profile_picture'
+        )
+
+
+class UserSerializer(serializers.ModelSerializer):
+    following_count = serializers.SerializerMethodField()
+    followers_count = serializers.SerializerMethodField()
+
+    followers = FollowerOrFollowingSerializer(many=True)
+    following = FollowerOrFollowingSerializer(many=True)
+
+    class Meta:
+        model = get_user_model()
+        fields = (
+            'name',
+            'username',
+            'profile_picture',
+            'uuid',
+            'following',
+            'following_count',
+            'followers',
+            'followers_count'
+        )
+
+    @staticmethod
+    def get_following_count(self):
+        return self.following.count()
+
+    @staticmethod
+    def get_followers_count(self):
+        return self.followers.count()
 
 
 class RegisterUserSerializer(serializers.ModelSerializer):
