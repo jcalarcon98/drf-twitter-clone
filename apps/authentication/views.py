@@ -39,11 +39,20 @@ class UserViewSet(viewsets.ModelViewSet):
         if 'action' in request.data:
             action = request.data['action']
             if 'follow_uuid' in request.data:
-                user_to_follow = get_user_model().objects.filter(uuid=request.data['follow_uuid']).first()
+                user_to_perform_action = get_user_model().objects.get(uuid=request.data['follow_uuid'])
                 if action == 'FOLLOW':
-                    current_user.following.add(user_to_follow)
+                    if user_to_perform_action in current_user.following.all():
+                        return Response({
+                            'message': 'The user has already been followed'
+                        }, status=status.HTTP_400_BAD_REQUEST)
+                    current_user.following.add(user_to_perform_action)
+
                 elif action == 'UNFOLLOW':
-                    current_user.following.remove(user_to_follow)
+                    if user_to_perform_action not in current_user.following.all():
+                        return Response({
+                            'message': 'The user is not yet followed'
+                        }, status=status.HTTP_400_BAD_REQUEST)
+                    current_user.following.remove(user_to_perform_action)
 
         user_serializer = UserSerializer(data=request.data, instance=current_user, partial=True,
                                          context={'request': request})
@@ -55,7 +64,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def get_parsers(self):
         """
-        Put this if Error with swagger appear with parsers
+        Put this if Error with swagger appear - parsers problem
         :return:
         :rtype:
         """
