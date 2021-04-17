@@ -1,6 +1,6 @@
-from rest_framework.routers import SimpleRouter
+from rest_framework.routers import  DefaultRouter
 
 from apps.tweets.views.tweet import TweetViewSet
 
-router = SimpleRouter()
-router.register('tweets', TweetViewSet)
+router = DefaultRouter()
+router.register('tweet', TweetViewSet)

@@ -6,6 +6,8 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
+from apps.utils.tests.login import Login
+
 
 class UserManagerTests(TestCase):
 
@@ -71,41 +73,20 @@ class CreateUserViewTests(TestCase):
 
 class UserViewSetTests(TestCase):
 
+    @classmethod
+    def setUpTestData(cls):
+        cls.testing_user_one = get_user_model().objects.create_user(email='testing@gmail.com', password='1234',
+                                                                    name='Testing')
+        cls.testing_user_two = get_user_model().objects.create_user(email='testing2@gmail.com', password='1234',
+                                                                    name='Testing2')
+
+        cls.uuid = cls.testing_user_one.uuid
+        cls.follower_uuid = cls.testing_user_two.uuid
+
     def setUp(self) -> None:
-        testing_user = {
-            'name': 'Jean Carlos Alarcón',
-            'email': 'jean.alarcon@unl.edu.ec',
-            'password': '1234',
-            'confirm_password': '1234'
-        }
-
-        url = reverse('api:user-list')
-        response = self.client.post(url, testing_user, format='json')
-        self.uuid = response.data.get('uuid')
-
-        # Create Another user
-        follow_user = {
-            'name': 'Jean Carlos Alarcón',
-            'email': 'jean1.alarcon@unl.edu.ec',
-            'password': '1234',
-            'confirm_password': '1234'
-        }
-
-        response = self.client.post(url, follow_user, format='json')
-        self.follower_uuid = response.data.get('uuid')
-
-        # User login
-        login_url = reverse('api:authentication:token_obtain_pair')
-        credentials = {
-            'email': 'jean.alarcon@unl.edu.ec',
-            'password': '1234'
-        }
-        login_response = self.client.post(login_url, credentials, format='json')
-        self.access_token = login_response.data.get('access')
-
-        # Set token on client
+        access_token = Login.get_user_access_token(self.testing_user_one.email, '1234').get('access')
         self.client = APIClient()
-        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.access_token)
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + access_token)
 
     def test_partial_update_user(self):
         new_user_name = 'Juanito'
