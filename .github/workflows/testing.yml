@@ -43,5 +43,11 @@ jobs:
         run: |
           pip install -r requirements.txt
           python3 manage.py test --settings=config.settings.development
+      - name: Code coverage
+        working-directory: ./twitter-clone-drf
+        run: |
+          pip install coverage
+          coverage run manage.py test
+          coverage report
 
 

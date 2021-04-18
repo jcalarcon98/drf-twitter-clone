@@ -1,2 +1,6 @@
 [run]
 omit = ../*migrations*
+source= .
+
+[report]
+fail_under = 100
