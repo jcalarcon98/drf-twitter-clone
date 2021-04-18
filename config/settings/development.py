@@ -4,7 +4,6 @@ from django.conf import settings
 
 from .base import *
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -15,7 +14,7 @@ DATABASES = {
         'NAME': 'twitter',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'localhost',
+        'HOST': 'database',
         'PORT': '5432',
     }
 }

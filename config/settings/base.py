@@ -4,11 +4,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'wu!m_$gyi(oc4hl+yr$@n%_$y@0zh(uknv2g-ekloae)i7&q%6'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'change')
 
 # Custom User
 AUTH_USER_MODEL = 'authentication.User'
@@ -107,10 +103,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
+STATIC_URL = '/static/static/'
+MEDIA_URL = '/static/media/'
 
-STATIC_URL = '/static/'
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+STATIC_ROOT = '/vol/web/static'
+MEDIA_ROOT = '/vol/web/media'
