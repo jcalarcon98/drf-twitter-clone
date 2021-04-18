@@ -31,6 +31,7 @@ jobs:
       - name: Django Testing
         working-directory: ./twitter-clone-drf
         run: |
+          pip install requirements.txt
           python3 manage.py test
 
 
