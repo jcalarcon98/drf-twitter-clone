@@ -32,6 +32,6 @@ jobs:
         working-directory: ./twitter-clone-drf
         run: |
           pip install -r requirements.txt
-          python3 manage.py --settings=config.settings.development test
+          python3 manage.py test --settings=config.settings.development
 
 
