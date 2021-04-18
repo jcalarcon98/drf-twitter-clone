@@ -47,7 +47,7 @@ jobs:
         working-directory: ./twitter-clone-drf
         run: |
           pip install coverage
-          coverage run manage.py test
+          coverage run manage.py test --settings=config.settings.development
           coverage report
 
 
