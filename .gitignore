@@ -30,3 +30,4 @@ pytestdebug.log
 
 db.sqlite3
 
+*.env

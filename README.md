@@ -1,1 +1,0 @@
-# Twitter Clone Functionality - Django Rest Framework
