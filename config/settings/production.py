@@ -1,7 +1,8 @@
+from datetime import timedelta
+
 from django.conf import settings
 
 from .base import *
-from datetime import timedelta
 
 DEBUG = False
 

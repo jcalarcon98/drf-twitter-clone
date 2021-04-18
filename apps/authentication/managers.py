@@ -35,4 +35,3 @@ class UserManager(BaseUserManager):
 
         superuser = self.create_user(email, password, **extra_fields)
         return superuser
-

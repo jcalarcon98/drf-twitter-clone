@@ -14,7 +14,7 @@ DATABASES = {
         'NAME': 'twitter',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'database',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
