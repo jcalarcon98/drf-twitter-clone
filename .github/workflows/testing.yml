@@ -81,7 +81,7 @@ jobs:
         id: docker_build_django
         uses: docker/build-push-action@v2
         with:
-          context: ./twitter-clone-drf
+          context: ./
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/twitter-clone:latest
