@@ -48,5 +48,43 @@ jobs:
           pip install coverage
           coverage run manage.py test --settings=config.settings.development
           coverage report
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v2
 
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and push Nginx
+        id: docker_build_nginx
+        uses: docker/build-push-action@v2
+        with:
+          context: ./nginx
+          file: ./nginx/Dockerfile.prod
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/nginx-personal-server:latest
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build_nginx.outputs.digest }}
+
+      - name: Build and push Django
+        id: docker_build_django
+        uses: docker/build-push-action@v2
+        with:
+          context: ./twitter-clone-drf
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/twitter-clone:latest
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build_django.outputs.digest }}
