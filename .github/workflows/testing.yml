@@ -88,3 +88,16 @@ jobs:
 
       - name: Image digest
         run: echo ${{ steps.docker_build_django.outputs.digest }}
+
+      - name: Upgrade images on Droplet
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            cd ${{ secrets.DIRECTORY }}
+            docker-compose down
+            docker system prune -a --force
+            docker-compose up --build -d
+
