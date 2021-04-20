@@ -23,6 +23,7 @@ def get_custom_schema_view():
             contact=openapi.Contact(email="jeancalarcon98@gmail.com"),
             license=openapi.License(name="MIT"),
         ),
+        url='https://jcalarcon.me/',
         public=True,
         permission_classes=[AllowAny],
         generator_class=SchemaGenerator
