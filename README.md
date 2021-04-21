@@ -34,8 +34,8 @@ You can see the project documentation in:
 ```shell
 http://localhost:8000/swagger/
 ```
-If you want to see this project in production environment, you can visit the next url: 
-www.jcalarcon.me/twitter-clone/swagger
+If you want to see this project documentation in production environment, you can visit the next url: 
+www.jcalarcon.me/twitter-clone/swagger/
 
 ## Code Coverage
 This project has a code coverage of 89%
