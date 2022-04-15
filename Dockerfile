@@ -32,9 +32,7 @@ RUN mkdir -p /vol/web/media
 
 RUN mkdir -p /vol/web/static
 
-RUN chmod -R 755 ./
-
-RUN chmod -R 755 /vol/web
+RUN chown user /vol/web
 
 USER user
 
