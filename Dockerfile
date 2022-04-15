@@ -26,11 +26,11 @@ COPY ./scripts /scripts
 
 RUN chmod +x /scripts/*
 
+RUN adduser -D user
+
 RUN mkdir -p /vol/web/media
 
 RUN mkdir -p /vol/web/static
-
-RUN adduser -D user
 
 RUN chmod -R 755 ./
 

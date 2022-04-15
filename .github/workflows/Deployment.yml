@@ -74,14 +74,14 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/twitter-clone:latest
 
-      - name: Upgrade images on Droplet
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          script: |
-            cd ${{ secrets.DIRECTORY }}
-            docker-compose down
-            docker rmi ${{ secrets.DOCKER_HUB_USERNAME }}/twitter-clone
-            docker-compose up --build -d
+      # - name: Upgrade images on Droplet
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.HOST }}
+      #     username: ${{ secrets.USERNAME }}
+      #     password: ${{ secrets.PASSWORD }}
+      #     script: |
+      #       cd ${{ secrets.DIRECTORY }}
+      #       docker-compose down
+      #       docker rmi ${{ secrets.DOCKER_HUB_USERNAME }}/twitter-clone
+      #       docker-compose up --build -d
